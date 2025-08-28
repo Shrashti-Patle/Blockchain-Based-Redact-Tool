@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedactChain - History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #3a86ff;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            margin-right: 0.5rem;
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-icon {
+            background: #3a86ff;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            background: #3a86ff;
+            color: white;
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .history-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 0.75rem;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 300px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3a86ff;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 2px solid #e0e7ff;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn {
+            background: #3a86ff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .history-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .history-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-item-date {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .history-item-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-processing {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .history-item-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .history-item-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .blockchain-hash {
+            font-family: 'Courier New', monospace;
+            background: #f1f5f9;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #3a86ff;
+            word-break: break-all;
+            margin-top: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #3a86ff;
+            color: white;
+            border-color: #3a86ff;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button.active {
+            background: #3a86ff;
+            color: white;
+            border-color: #3a86ff;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .history-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .history-item-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .history-item-details {
+                grid-template-columns: 1fr;
+            }
+
+            .history-item-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                RedactChain
+            </div>
+            <div class="profile-menu">
+            <div class="profile-icon">👤</div>
+            <nav>
+              <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="History.html" class="active">History</a></li>
+                <li><a href="Setting.html">Settings</a></li>
+                <li><a href="Contact.html">Help</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="page-header">
+                <h1>Document History</h1>
+                <p>View and manage your redacted document history</p>
+            </div>
+
+            <div class="history-container">
+                <div class="history-controls">
+                    <div class="search-filter">
+                        <input type="text" class="search-box" id="searchBox" placeholder="Search documents...">
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="processing">Processing</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                        <select class="filter-select" id="dateFilter">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" id="exportBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-15"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Export History
+                        </button>
+                        <button class="btn btn-danger" id="clearHistoryBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            Clear History
+                        </button>
+                    </div>
+                </div>
+
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>RedactChain &copy; 2025 | AI-Powered Document Redaction with Blockchain Verification</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample history data
+        const historyData = [
+            {
+                id: 1,
+                title: "Contract_Amendment_2025.docx",
+                date: "2025-05-27 14:30:25",
+                status: "completed",
+                redactions: 12,
+                method: "AI-Enhanced",
+                size: "2.4 MB",
+                hash: "0x1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890",
+                timeProcessed: "1.2s"
+            },
+            {
+                id: 2,
+                title: "Employee_Records_May.txt",
+                date: "2025-05-27 13:15:10",
+                status: "completed",
+                redactions: 45,
+                method: "Pattern-Based",
+                size: "1.8 MB",
+                hash: "0x9876543210fedcba0987654321fedcba0987654321fedcba0987654321fedcba",
+                timeProcessed: "2.5s"
+            },
+            {
+                id: 3,
+                title: "Medical_Report_Patient_001.pdf",
+                date: "2025-05-27 11:45:33",
+                status: "processing",
+                redactions: 0,
+                method: "AI-Enhanced",
+                size: "3.1 MB",
+                hash: "",
+                timeProcessed: ""
+            },
+            {
+                id: 4,
+                title: "Financial_Statement_Q1.docx",
+                date: "2025-05-26 16:20:15",
+                status: "completed",
+                redactions: 28,
+                method: "AI-Enhanced",
+                size: "4.2 MB",
+                hash: "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+                timeProcessed: "3.1s"
+            },
+            {
+                id: 5,
+                title: "Legal_Brief_Case_789.txt",
+                date: "2025-05-26 09:30:45",
+                status: "failed",
+                redactions: 0,
+                method: "Pattern-Based",
+                size: "856 KB",
+                hash: "",
+                timeProcessed: ""
+            },
+            {
+                id: 6,
+                title: "Customer_Database_Export.csv",
+                date: "2025-05-25 14:15:20",
+                status: "completed",
+                redactions: 156,
+                method: "AI-Enhanced",
+                size: "12.5 MB",
+                hash: "0x567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234",
+                timeProcessed: "8.7s"
+            }
+        ];
+
+        let currentPage = 1;
+        const itemsPerPage = 5;
+        let filteredData = [...historyData];
+
+        // DOM Elements
+        const searchBox = document.getElementById('searchBox');
+        const statusFilter = document.getElementById('statusFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const historyList = document.getElementById('historyList');
+        const pagination = document.getElementById('pagination');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+        // Event Listeners
+        searchBox.addEventListener('input', filterHistory);
+        statusFilter.addEventListener('change', filterHistory);
+        dateFilter.addEventListener('change', filterHistory);
+        exportBtn.addEventListener('click', exportHistory);
+        clearHistoryBtn.addEventListener('click', clearHistory);
+
+        function renderHistoryItem(item) {
+            const statusClass = `status-${item.status}`;
+            const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+            
+            return `
+                <div class="history-item">
+                    <div class="history-item-header">
+                        <div>
+                            <div class="history-item-title">${item.title}</div>
+                            <div class="history-item-date">${formatDate(item.date)}</div>
+                        </div>
+                        <div class="history-item-status ${statusClass}">${statusText}</div>
+                    </div>
+                    
+                    <div class="history-item-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Redactions:</span>
+                            <span class="detail-value">${item.redactions}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Method:</span>
+                            <span class="detail-value">${item.method}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">File Size:</span>
+                            <span class="detail-value">${item.size}</span>
+                        </div>
+                        ${item.timeProcessed ? `
+                        <div class="detail-item">
+                            <span class="detail-label">Process Time:</span>
+                            <span class="detail-value">${item.timeProcessed}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${item.hash ? `<div class="blockchain-hash">Blockchain Hash: ${item.hash}</div>` : ''}
+                    
+                    <div class="history-item-actions">
+                        ${item.status === 'completed' ? `
+                            <button class="btn btn-small" onclick="viewDocument(${item.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                                View
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="downloadDocument(${item.id})">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="viewOnBlockchain('${item.hash}')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                                Blockchain
+                            </button>
+                        ` : item.status === 'processing' ? `
+                            <button class="btn btn-small btn-secondary" onclick="cancelProcessing(${item.id})">Cancel</button>
+                        ` : `
+                            <button class="btn btn-small" onclick="retryProcessing(${item.id})">Retry</button>
+                        `}
+                        <button class="btn btn-small btn-danger" onclick="deleteHistoryItem(${item.id})">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderHistory() {
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            if (pageData.length === 0) {
+                historyList.innerHTML = `
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <h3>No documents found</h3>
+                        <p>No documents match your current filters. Try adjusting your search criteria.</p>
+                    </div>
+                `;
+            } else {
+                historyList.innerHTML = pageData.map(renderHistoryItem).join('');
+            }
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = `
+                <button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">Previous</button>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `<button class="${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += '<span>...</span>';
+                }
+            }
+
+            paginationHTML += `
+                <button ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderHistory();
+        }
+
+        function filterHistory() {
+            const searchTerm = searchBox.value.toLowerCase();
+            const statusValue = statusFilter.value;
+            const dateValue = dateFilter.value;
+
+            filteredData = historyData.filter(item => {
+                const matchesSearch = item.title.toLowerCase().includes(searchTerm);
+                const matchesStatus = statusValue === 'all' || item.status === statusValue;
+                const matchesDate = filterByDate(item.date, dateValue);
+
+                return matchesSearch && matchesStatus && matchesDate;
+            });
+
+            currentPage = 1;
+            renderHistory();
+        }
+
+        function filterByDate(itemDate, filterValue) {
+            if (filterValue === 'all') return true;
+
+            const itemDateObj = new Date(itemDate);
+            const now = new Date();
+            
+            switch (filterValue) {
+                case 'today':
+                    return itemDateObj.toDateString() === now.toDateString();
+                case 'week':
+                    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    return itemDateObj >= weekAgo;
+                case 'month':
+                    const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                    return itemDateObj >= monthAgo;
+                default:
+                    return true;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+
+        // Action functions
+        function viewDocument(id) {
+            alert(`Viewing document with ID: ${id}`);
+        }
+
+        function downloadDocument(id) {
+            const item = historyData.find(item => item.id === id);
+            alert(`Downloading: ${item.title}`);
+        }
+
+        function viewOnBlockchain(hash) {
+            alert(`Opening blockchain explorer for: ${hash}`);
+        }
+
+        function cancelProcessing(id) {
+            if (confirm('Are you sure you want to cancel processing?')) {
+                alert(`Cancelled processing for document ID: ${id}`);
+            }
+        }
+
+        function retryProcessing(id) {
+            alert(`Retrying processing for document ID: ${id}`);
+        }
+
+        function deleteHistoryItem(id) {
+            if (confirm('Are you sure you want to delete this history item? This action cannot be undone.')) {
+                const index = historyData.findIndex(item => item.id === id);
+                if (index > -1) {
+                    historyData.splice(index, 1);
+                    filterHistory();
+                    alert('History item deleted successfully.');
+                }
+            }
+        }
+
+        function exportHistory() {
+            const csvContent = [
+                ['Title', 'Date', 'Status', 'Redactions', 'Method', 'Size', 'Hash'].join(','),
+                ...filteredData.map(item => [
+                    item.title,
+                    item.date,
+                    item.status,
+                    item.redactions,
+                    item.method,
+                    item.size,
+                    item.hash
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'redactchain_history.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all history? This action cannot be undone.')) {
+                historyData.length = 0;
+                filterHistory();
+                alert('History cleared successfully.');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderHistory();
+        });
+    </script>
+</body>
+</html>

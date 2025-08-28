@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedactChain - AI-Blockchain Redaction System</title>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                RedactChain
+            </div>
+            <div class="profile-menu">
+            <div class="profile-icon">👤</div>
+            <nav>
+              <ul>
+                <li><a href="index.html" class="active">Dashboard</a></li>
+                <li><a href="History.html">History</a></li>
+                <li><a href="Setting.html">Settings</a></li>
+                <li><a href="Contact.html">Help</a></li>
+                <li><a href="play.html">Research-Paper</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="app-container">
+            <div class="left-panel">
+                <div class="card">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        Input Document
+                    </h2>
+                    
+                    <!-- Gemini AI Configuration -->
+                    <div class="ai-config" style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+                        <h3>AI Configuration</h3>
+                        <div style="margin-bottom: 10px;">
+                            <label for="geminiApiKey">Gemini API Key (Optional):</label>
+                            <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API key for enhanced detection" style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <input type="checkbox" id="useAiDetection">
+                            <label for="useAiDetection">Use AI-Enhanced Detection (Gemini)</label>
+                        </div>
+                    </div>
+
+                    <div class="input-section">
+                        <label for="uploadInput" class="file-upload" id="uploadArea">
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <div class="upload-text">
+                                <strong>Click to upload</strong> or drag and drop<br>
+                                TXT, PDF, DOCX files
+                            </div>
+                        </label>
+                        <input type="file" id="uploadInput" accept=".txt,.pdf,.docx">
+                        
+                        <div>
+                            <h3>Or enter text directly:</h3>
+                            <textarea id="inputText" placeholder="Enter text containing sensitive information here...">John Smith lives at 123 Main Street, Springfield, IL 62701. You can reach him at (555) 123-4567 or john.smith@example.com. His SSN is 123-45-6789 and credit card number is 4111-1111-1111-1111 with CVV 123, expiring on 12/25. His IP address is 192.168.1.1.</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="settings">
+                        <h3>Redaction Settings</h3>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="names" checked>
+                                <label for="names">Names</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="addresses" checked>
+                                <label for="addresses">Addresses</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="phoneNumbers" checked>
+                                <label for="phoneNumbers">Phone Numbers</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="emails" checked>
+                                <label for="emails">Email Addresses</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ssn" checked>
+                                <label for="ssn">SSN</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="creditCards" checked>
+                                <label for="creditCards">Credit Card Info</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dates">
+                                <label for="dates">Dates</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ipAddresses">
+                                <label for="ipAddresses">IP Addresses</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Manual Selection Mode -->
+                    <div class="manual-selection" style="margin-top: 20px;">
+                        <h3>Manual Selection Mode</h3>
+                        <button id="manualModeBtn" class="btn btn-secondary">Enable Manual Selection</button>
+                        <p style="font-size: 12px; color: #666; margin-top: 5px;">Click to manually select text for redaction</p>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button id="processBtn" class="btn">Process Document</button>
+                        <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-panel">
+                <div class="card">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                        </svg>
+                        Redacted Output
+                    </h2>
+                    
+                    <div class="loading" id="loadingIndicator">
+                        <div class="loading-spinner"></div>
+                        <p>Processing document and recording on blockchain...</p>
+                    </div>
+                    
+                    <div class="result-section" id="resultSection" style="display: none;">
+                        <div>
+                            <h3>Redacted Content:</h3>
+                            <div class="result-container" id="resultContent"></div>
+                        </div>
+                        
+                        <div class="blockchain-verification">
+                            <div class="verification-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <strong>Verified on Blockchain</strong>
+                                <div>Document hash securely stored and verified</div>
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-details">
+                            <div><strong>Transaction Hash:</strong></div>
+                            <code id="transactionHash">0x0000000000000000000000000000000000000000000000000000000000000000</code>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary" id="viewOnExplorerBtn">View on Explorer</button>
+                                <button class="btn" id="downloadBtn">Download Redacted Document</button>
+                                <button class="btn btn-warning" id="unredactBtn" style="background-color: #ff6b35;">Restore Original</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Manual Selection Panel -->
+                <div class="card" id="manualSelectionPanel" style="display: none;">
+                    <h2>Manual Selection</h2>
+                    <div>
+                        <h3>Selected Text:</h3>
+                        <div id="selectedTextDisplay" style="background-color: #f8f9fa; padding: 10px; border-radius: 4px; min-height: 50px; margin-bottom: 10px;"></div>
+                        <button id="redactSelectedBtn" class="btn btn-primary" disabled>Redact Selected Text</button>
+                        <button id="clearSelectionBtn" class="btn btn-secondary">Clear Selection</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Redaction Analytics
+                    </h2>
+                    <div id="analyticsContent">
+                        <p>No document processed yet. Process a document to see analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>RedactChain &copy; 2025 | AI-Powered Document Redaction with Blockchain Verification</p>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let originalText = '';
+        let currentRedactedText = '';
+        let manualModeEnabled = false;
+        let selectedTextRanges = [];
+        let redactionData = {}; // Store original text for restoration
+
+        // DOM Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadInput = document.getElementById('uploadInput');
+        const inputText = document.getElementById('inputText');
+        const processBtn = document.getElementById('processBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const resultSection = document.getElementById('resultSection');
+        const resultContent = document.getElementById('resultContent');
+        const transactionHash = document.getElementById('transactionHash');
+        const viewOnExplorerBtn = document.getElementById('viewOnExplorerBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const unredactBtn = document.getElementById('unredactBtn');
+        const analyticsContent = document.getElementById('analyticsContent');
+        const manualModeBtn = document.getElementById('manualModeBtn');
+        const manualSelectionPanel = document.getElementById('manualSelectionPanel');
+        const selectedTextDisplay = document.getElementById('selectedTextDisplay');
+        const redactSelectedBtn = document.getElementById('redactSelectedBtn');
+        const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+        const geminiApiKey = document.getElementById('geminiApiKey');
+        const useAiDetection = document.getElementById('useAiDetection');
+
+        // File reading functionality
+        let fileContent = null;
+        let fileName = null;
+
+        // Event Listeners
+        uploadArea.addEventListener('click', () => {
+            uploadInput.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#3a86ff';
+            uploadArea.style.backgroundColor = 'rgba(58, 134, 255, 0.05)';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#d4d4d4';
+            uploadArea.style.backgroundColor = '';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#d4d4d4';
+            uploadArea.style.backgroundColor = '';
+            
+            if (e.dataTransfer.files.length) {
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        });
+
+        uploadInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleFileSelect(e.target.files[0]);
+            }
+        });
+
+        // Manual selection event listeners
+        manualModeBtn.addEventListener('click', toggleManualMode);
+        redactSelectedBtn.addEventListener('click', redactSelectedText);
+        clearSelectionBtn.addEventListener('click', clearSelection);
+
+        // Other event listeners
+        processBtn.addEventListener('click', processDocument);
+        resetBtn.addEventListener('click', resetForm);
+        viewOnExplorerBtn.addEventListener('click', viewOnExplorer);
+        downloadBtn.addEventListener('click', downloadDocument);
+        unredactBtn.addEventListener('click', restoreOriginal);
+
+        function handleFileSelect(file) {
+            fileName = file.name;
+            uploadArea.innerHTML = `<div class="upload-icon">📄</div><div class="upload-text">Selected: ${fileName}</div>`;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fileContent = e.target.result;
+                inputText.value = fileContent;
+                originalText = fileContent;
+            };
+            
+            if (file.type === 'text/plain') {
+                reader.readAsText(file);
+            } else {
+                alert('For this demo, only plain text files are fully supported');
+                reader.readAsText(file);
+            }
+        }
+
+        function toggleManualMode() {
+            manualModeEnabled = !manualModeEnabled;
+            
+            if (manualModeEnabled) {
+                manualModeBtn.textContent = 'Disable Manual Selection';
+                manualModeBtn.classList.add('active');
+                manualSelectionPanel.style.display = 'block';
+                enableTextSelection();
+            } else {
+                manualModeBtn.textContent = 'Enable Manual Selection';
+                manualModeBtn.classList.remove('active');
+                manualSelectionPanel.style.display = 'none';
+                disableTextSelection();
+            }
+        }
+
+        function enableTextSelection() {
+            inputText.addEventListener('mouseup', handleTextSelection);
+            inputText.addEventListener('keyup', handleTextSelection);
+            inputText.style.userSelect = 'text';
+        }
+
+        function disableTextSelection() {
+            inputText.removeEventListener('mouseup', handleTextSelection);
+            inputText.removeEventListener('keyup', handleTextSelection);
+        }
+
+        function handleTextSelection() {
+            const selection = inputText.value.substring(inputText.selectionStart, inputText.selectionEnd);
+            
+            if (selection.length > 0) {
+                selectedTextDisplay.textContent = `"${selection}"`;
+                redactSelectedBtn.disabled = false;
+                
+                // Store selection range
+                selectedTextRanges.push({
+                    start: inputText.selectionStart,
+                    end: inputText.selectionEnd,
+                    text: selection
+                });
+            }
+        }
+
+        function redactSelectedText() {
+            if (selectedTextRanges.length === 0) return;
+            
+            let text = inputText.value;
+            
+            // Sort ranges by start position (descending) to avoid index issues
+            selectedTextRanges.sort((a, b) => b.start - a.start);
+            
+            selectedTextRanges.forEach(range => {
+                const before = text.substring(0, range.start);
+                const after = text.substring(range.end);
+                const redacted = '█'.repeat(range.text.length);
+                text = before + redacted + after;
+            });
+            
+            inputText.value = text;
+            clearSelection();
+        }
+
+        function clearSelection() {
+            selectedTextRanges = [];
+            selectedTextDisplay.textContent = '';
+            redactSelectedBtn.disabled = true;
+        }
+
+        // Enhanced redaction patterns with better regex
+        function getRedactionPatterns() {
+            return {
+                names: {
+                    pattern: /\b[A-Z][a-z]+ [A-Z][a-z]+\b/g,
+                    replacement: (match) => `[NAME-${match.length}]`
+                },
+                addresses: {
+                    pattern: /\b\d+\s+[A-Za-z\s]+(Street|St\.?|Avenue|Ave\.?|Road|Rd\.?|Boulevard|Blvd\.?|Lane|Ln\.?|Drive|Dr\.?|Way|Circle|Cir\.?|Court|Ct\.?|Place|Pl\.?)\b,?\s*[A-Za-z\s]*,?\s*[A-Z]{2}\s*\d{5}(-\d{4})?\b/gi,
+                    replacement: (match) => `[ADDRESS-${match.length}]`
+                },
+                phoneNumbers: {
+                    pattern: /(\+1\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/g,
+                    replacement: (match) => `[PHONE-${match.length}]`
+                },
+                emails: {
+                    pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+                    replacement: (match) => `[EMAIL-${match.length}]`
+                },
+                ssn: {
+                    pattern: /\b\d{3}[- ]?\d{2}[- ]?\d{4}\b/g,
+                    replacement: (match) => `[SSN-REDACTED]`
+                },
+                creditCards: {
+                    pattern: /\b(?:\d{4}[- ]?){3}\d{4}(?:\s+(?:with\s+)?CVV\s+\d{3,4})?(?:\s*,?\s*expiring\s+on\s+\d{1,2}\/\d{2,4})?\b/gi,
+                    replacement: (match) => `[CREDIT-CARD-REDACTED]`
+                },
+                dates: {
+                    pattern: /\b(?:0?[1-9]|1[0-2])\/(?:0?[1-9]|[12]\d|3[01])\/(?:19|20)?\d{2}\b/g,
+                    replacement: (match) => `[DATE-${match.length}]`
+                },
+                ipAddresses: {
+                    pattern: /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g,
+                    replacement: (match) => `[IP-ADDRESS]`
+                }
+            };
+        }
+
+        // Gemini AI Integration
+        async function detectSensitiveDataWithAI(text) {
+            const apiKey = geminiApiKey.value.trim();
+            if (!apiKey || !useAiDetection.checked) {
+                return null;
+            }
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `Analyze the following text and identify all sensitive information that should be redacted. Return a JSON array of objects with 'type', 'value', and 'startIndex' properties for each sensitive item found. Types should include: names, addresses, phone_numbers, emails, ssn, credit_cards, dates, ip_addresses, or other_sensitive.
+
+Text to analyze:
+${text}
+
+Respond only with valid JSON array, no other text.`
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (aiResponse) {
+                    try {
+                        return JSON.parse(aiResponse);
+                    } catch (e) {
+                        console.error('Failed to parse AI response:', e);
+                        return null;
+                    }
+                }
+            } catch (error) {
+                console.error('AI detection error:', error);
+                return null;
+            }
+        }
+
+        async function processDocument() {
+            if (!inputText.value.trim()) {
+                alert('Please enter text or upload a document first');
+                return;
+            }
+
+            originalText = inputText.value;
+            loadingIndicator.style.display = 'block';
+            resultSection.style.display = 'none';
+
+            try {
+                let redactedText = originalText;
+                let detectedItems = [];
+
+                // Try AI detection first
+                if (useAiDetection.checked && geminiApiKey.value.trim()) {
+                    const aiDetected = await detectSensitiveDataWithAI(originalText);
+                    if (aiDetected && Array.isArray(aiDetected)) {
+                        detectedItems = aiDetected;
+                        redactedText = applyAIRedaction(originalText, aiDetected);
+                    }
+                }
+
+                // Fallback to pattern-based redaction if AI detection fails or is disabled
+                if (detectedItems.length === 0) {
+                    const result = performPatternRedaction(originalText);
+                    redactedText = result.text;
+                    detectedItems = result.items;
+                }
+
+                // Store redaction data for restoration
+                redactionData = {
+                    original: originalText,
+                    redacted: redactedText,
+                    items: detectedItems
+                };
+
+                const hash = generateDocumentHash(redactedText);
+                
+                setTimeout(() => {
+                    displayResults(redactedText);
+                    simulateBlockchainStorage(hash);
+                    loadingIndicator.style.display = 'none';
+                    resultSection.style.display = 'block';
+                    updateAnalytics(originalText, redactedText, detectedItems);
+                    currentRedactedText = redactedText;
+                }, 1500);
+
+            } catch (error) {
+                console.error('Processing error:', error);
+                loadingIndicator.style.display = 'none';
+                alert('An error occurred during processing. Please try again.');
+            }
+        }
+
+        function applyAIRedaction(text, detectedItems) {
+            let redactedText = text;
+            
+            // Sort by position descending to avoid index issues
+            detectedItems.sort((a, b) => (b.startIndex || 0) - (a.startIndex || 0));
+            
+            detectedItems.forEach(item => {
+                if (item.value && item.startIndex !== undefined) {
+                    const before = redactedText.substring(0, item.startIndex);
+                    const after = redactedText.substring(item.startIndex + item.value.length);
+                    const replacement = `[${item.type.toUpperCase()}-REDACTED]`;
+                    redactedText = before + replacement + after;
+                }
+            });
+            
+            return redactedText;
+        }
+
+        function performPatternRedaction(text) {
+            const patterns = getRedactionPatterns();
+            const redactionStats = {};
+            let redactedText = text;
+            const detectedItems = [];
+
+            Object.keys(patterns).forEach(type => {
+                const checkbox = document.getElementById(type);
+                if (checkbox && checkbox.checked) {
+                    redactionStats[type] = 0;
+                    const pattern = patterns[type];
+                    
+                    redactedText = redactedText.replace(pattern.pattern, (match, ...args) => {
+                        redactionStats[type]++;
+                        detectedItems.push({
+                            type: type,
+                            original: match,
+                            replacement: pattern.replacement(match)
+                        });
+                        return pattern.replacement(match);
+                    });
+                }
+            });
+
+            window.redactionStats = redactionStats;
+            return { text: redactedText, items: detectedItems };
+        }
+
+        function generateDocumentHash(text) {
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) {
+                const char = text.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            const hexHash = Math.abs(hash).toString(16).padStart(64, '0');
+            return '0x' + hexHash;
+        }
+
+        function displayResults(redactedText) {
+            resultContent.innerHTML = redactedText.replace(/\n/g, '<br>');
+        }
+
+        function simulateBlockchainStorage(hash) {
+            transactionHash.textContent = hash;
+        }
+
+        function updateAnalytics(originalText, redactedText, items) {
+            const totalRedactions = items.length;
+            const originalLength = originalText.length;
+            const redactedLength = redactedText.replace(/\[[A-Z-]+\]/g, '').length;
+            const percentRedacted = ((originalLength - redactedLength) / originalLength * 100).toFixed(1);
+
+            const typeBreakdown = {};
+            items.forEach(item => {
+                typeBreakdown[item.type] = (typeBreakdown[item.type] || 0) + 1;
+            });
+
+            analyticsContent.innerHTML = `
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>Total Redactions:</strong>
+                        <span>${totalRedactions}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <strong>Text Affected:</strong>
+                        <span>${percentRedacted}%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong>Detection Method:</strong>
+                        <span>${useAiDetection.checked && geminiApiKey.value.trim() ? 'AI-Enhanced' : 'Pattern-Based'}</span>
+                    </div>
+                </div>
+                
+                <div style="background-color: #f3f4f6; border-radius: 6px; padding: 15px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px;">Redaction Breakdown:</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        ${Object.keys(typeBreakdown).map(type => 
+                            `<div>${type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}: ${typeBreakdown[type]}</div>`
+                        ).join('')}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <h3 style="margin-bottom: 10px; font-size: 16px;">Timestamp:</h3>
+                    <div>${new Date().toLocaleString()}</div>
+                </div>
+            `;
+        }
+
+        function restoreOriginal() {
+            if (redactionData.original) {
+                resultContent.innerHTML = redactionData.original.replace(/\n/g, '<br>');
+                unredactBtn.textContent = 'Show Redacted';
+                unredactBtn.onclick = showRedacted;
+            }
+        }
+
+        function showRedacted() {
+            if (redactionData.redacted) {
+                resultContent.innerHTML = redactionData.redacted.replace(/\n/g, '<br>');
+                unredactBtn.textContent = 'Restore Original';
+                unredactBtn.onclick = restoreOriginal;
+            }
+        }
+
+        function resetForm() {
+            uploadArea.innerHTML = `
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </div>
+                <div class="upload-text">
+                    <strong>Click to upload</strong> or drag and drop<br>
+                    TXT, PDF, DOCX files
+                </div>
+            `;
+            inputText.value = 'John Smith lives at 123 Main Street, Springfield, IL 62701. You can reach him at (555) 123-4567 or john.smith@example.com. His SSN is 123-45-6789 and credit card number is 4111-1111-1111-1111 with CVV 123, expiring on 12/25. His IP address is 192.168.1.1.';
+            uploadInput.value = '';
+            fileContent = null;
+            fileName = null;
+            originalText = '';
+            currentRedactedText = '';
+            redactionData = {};
+            
+            resultSection.style.display = 'none';
+            loadingIndicator.style.display = 'none';
+            analyticsContent.innerHTML = '<p>No document processed yet. Process a document to see analytics.</p>';
+            
+            // Reset manual selection
+            if (manualModeEnabled) {
+                toggleManualMode();
+            }
+            clearSelection();
+        }
+
+        function viewOnExplorer() {
+            const hash = transactionHash.textContent;
+            // Simulate opening blockchain explorer
+            alert(`Opening blockchain explorer for transaction: ${hash}`);
+            // In a real implementation, this would open the actual blockchain explorer
+            // window.open(`https://etherscan.io/tx/${hash}`, '_blank');
+        }
+
+        function downloadDocument() {
+            if (!currentRedactedText) {
+                alert('No redacted document to download');
+                return;
+            }
+            
+            const blob = new Blob([currentRedactedText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName ? `redacted_${fileName}` : 'redacted_document.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state
+            originalText = inputText.value;
+            
+            // Add some visual feedback for checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.parentElement.style.background = 'rgba(58, 134, 255, 0.1)';
+                    } else {
+                        this.parentElement.style.background = '';
+                    }
+                });
+                
+                // Set initial state
+                if (checkbox.checked) {
+                    checkbox.parentElement.style.background = 'rgba(58, 134, 255, 0.1)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - RedactChain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .help-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .help-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .help-card h2 {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .help-card h2 svg {
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+            color: #667eea;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 20px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #667eea;
+        }
+
+        .faq-answer {
+            color: #6b7280;
+            margin-top: 10px;
+            line-height: 1.6;
+            display: none;
+            padding-left: 10px;
+        }
+
+        .faq-answer.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .faq-toggle {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-toggle.active {
+            transform: rotate(180deg);
+        }
+
+        .guide-section {
+            margin-bottom: 30px;
+        }
+
+        .guide-section h3 {
+            color: #374151;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .guide-section h3::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .guide-section p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .guide-section ol {
+            color: #6b7280;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+
+        .guide-section ol li {
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: #e9ecef;
+        }
+
+        .contact-item svg {
+            width: 24px;
+            height: 24px;
+            color: #667eea;
+            margin-right: 12px;
+        }
+
+        .contact-item div h4 {
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .contact-item div p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .status-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .feature-highlight {
+            background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .feature-highlight h4 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .feature-highlight p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .back-to-app {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-app:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .help-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-to-app {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                RedactChain
+            </div>
+            <div class="profile-menu">
+            <div class="profile-icon">👤</div>
+            <nav>
+              <ul>
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="History.html">History</a></li>
+                <li><a href="Setting.html">Settings</a></li>
+                <li><a href="Contact.html" class="active">Help</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Help & Support</h1>
+                <p>Everything you need to know about using RedactChain effectively</p>
+            </div>
+
+            <div class="help-grid">
+                <!-- FAQ Section -->
+                <div class="help-card" id="faq">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Frequently Asked Questions
+                    </h2>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What is RedactChain and how does it work?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            RedactChain is an AI-powered document redaction system that uses blockchain technology for verification. It automatically detects and redacts sensitive information like names, addresses, phone numbers, and more, while creating an immutable record on the blockchain for security and compliance purposes.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Is my data secure when using RedactChain?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, your data security is our top priority. All processing happens locally in your browser, and we don't store your documents on our servers. The blockchain only stores cryptographic hashes of your redacted documents, not the actual content.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What file formats are supported?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            Currently, RedactChain supports plain text (.txt) files, PDF documents, and Microsoft Word documents (.docx). We're continuously working to add support for more file formats.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Do I need a Gemini API key?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            No, the Gemini API key is optional. RedactChain works with built-in pattern recognition by default. Adding a Gemini API key enables AI-enhanced detection for more accurate and contextual redaction of sensitive information.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            Can I undo redactions?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, you can restore the original document during your current session using the "Restore Original" button. However, once you close the browser or reset the form, the original data is permanently removed for security reasons.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            What blockchain is used for verification?
+                            <svg class="faq-toggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="faq-answer">
+                            RedactChain uses Ethereum-compatible blockchain technology to store document hashes. This ensures immutability and provides a verifiable audit trail for compliance purposes.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Guide Section -->
+                <div class="help-card" id="guide">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        User Guide
+                    </h2>
+
+                    <div class="guide-section">
+                        <h3>Getting Started</h3>
+                        <ol>
+                            <li>Upload a document or paste text directly into the input area</li>
+                            <li>Configure your redaction settings by selecting the types of information to redact</li>
+                            <li>Optionally add your Gemini API key for enhanced AI detection</li>
+                            <li>Click "Process Document" to begin redaction</li>
+                            <li>Review the results and download your redacted document</li>
+                        </ol>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>Manual Selection Mode</h3>
+                        <p>For precise control over redaction:</p>
+                        <ol>
+                            <li>Enable "Manual Selection Mode"</li>
+                            <li>Select text in the input area that you want to redact</li>
+                            <li>Click "Redact Selected Text" to apply redaction</li>
+                            <li>Repeat for additional selections as needed</li>
+                        </ol>
+                    </div>
+
+                    <div class="feature-highlight">
+                        <h4>💡 Pro Tip</h4>
+                        <p>Use AI-enhanced detection with a Gemini API key for better context-aware redaction of sensitive information that might be missed by pattern matching alone.</p>
+                    </div>
+
+                    <div class="guide-section">
+                        <h3>Understanding Redaction Types</h3>
+                        <p><strong>Names:</strong> Personal names and proper nouns</p>
+                        <p><strong>Addresses:</strong> Street addresses with city, state, and ZIP codes</p>
+                        <p><strong>Phone Numbers:</strong> Various phone number formats</p>
+                        <p><strong>Email Addresses:</strong> Valid email addresses</p>
+                        <p><strong>SSN:</strong> Social Security Numbers</p>
+                        <p><strong>Credit Card Info:</strong> Card numbers, CVV, and expiration dates</p>
+                        <p><strong>Dates:</strong> Date formats (MM/DD/YYYY)</p>
+                        <p><strong>IP Addresses:</strong> IPv4 addresses</p>
+                    </div>
+                </div>
+
+                <!-- Feedback Section -->
+                <div class="help-card" id="feedback">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg>
+                        Send Feedback
+                    </h2>
+
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label for="feedbackType">Feedback Type</label>
+                            <select id="feedbackType" required>
+                                <option value="">Select feedback type</option>
+                                <option value="bug">Bug Report</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="improvement">Improvement Suggestion</option>
+                                <option value="general">General Feedback</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedbackSubject">Subject</label>
+                            <input type="text" id="feedbackSubject" placeholder="Brief description of your feedback" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedbackMessage">Message</label>
+                            <textarea id="feedbackMessage" placeholder="Please provide detailed information about your feedback..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedbackEmail">Email (Optional)</label>
+                            <input type="email" id="feedbackEmail" placeholder="your.email@example.com">
+                            <small style="color: #6b7280;">We'll only use this to follow up on your feedback if needed</small>
+                        </div>
+
+                        <button type="submit" class="btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+                            </svg>
+                            Send Feedback
+                        </button>
+                    </form>
+
+                    <div id="feedbackStatus" class="status-message"></div>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="help-card" id="contact">
+                    <h2>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Contact Us
+                    </h2>
+
+                    <p style="margin-bottom: 20px; color: #6b7280;">
+                        Need help or have questions? We're here to assist you with RedactChain.
+                    </p>
+
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                                <h4>Email Support</h4>
+                                <p>support@redactchain.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <div>
+                                <h4>Phone Support</h4>
+                                <p>+1 (555) 123-REDACT</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <h4>Business Hours</h4>
+                                <p>Mon-Fri: 9 AM - 6 PM EST</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Tech Street, Suite 100<br>San Francisco, CA 94105</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-highlight" style="margin-top: 30px;">
+                        <h4>🚀 Enterprise Solutions</h4>
+                        <p>Looking for enterprise-grade redaction solutions? Contact our sales team at <strong>enterprise@redactchain.com</strong> for custom implementations, API access, and bulk processing capabilities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-to-app" onclick="goBackToApp()">
+        ← Back to App
+    </button>
+
+    <script>
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-answer.active').forEach(item => {
+                if (item !== answer) {
+                    item.classList.remove('active');
+                    item.previousElementSibling.querySelector('.faq-toggle').classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            answer.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function goBackToApp() {
+            // In a real implementation, this would navigate back to the main app
+            alert('Navigating back to RedactChain main application...');
+            // window
+
+            function goBackToApp() {
+            // In a real implementation, this would navigate back to the main app
+            window.history.back();
+        }
+
+        // Handle feedback form submission
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                type: document.getElementById('feedbackType').value,
+                subject: document.getElementById('feedbackSubject').value,
+                message: document.getElementById('feedbackMessage').value,
+                email: document.getElementById('feedbackEmail').value
+            };
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 8px;"><div style="width: 16px; height: 16px; border: 2px solid #fff; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>Sending...</div>';
+            submitBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                const statusDiv = document.getElementById('feedbackStatus');
+                statusDiv.className = 'status-message success';
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '✅ Thank you for your feedback! We\'ll review it and get back to you if needed.';
+                
+                // Reset form
+                this.reset();
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Hide status message after 5 seconds
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+                
+            }, 1500);
+        });
+
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Get section ID from onclick attribute or href
+                const href = this.getAttribute('href');
+                const onclick = this.getAttribute('onclick');
+                
+                if (onclick) {
+                    // Execute the onclick function
+                    eval(onclick);
+                } else if (href && href !== '#') {
+                    // Handle regular href links
+                    const sectionId = href.substring(1);
+                    scrollToSection(sectionId);
+                }
+            });
+        });
+
+        // Highlight active section on scroll
+        window.addEventListener('scroll', function() {
+            const sections = ['faq', 'guide', 'feedback', 'contact'];
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let currentSection = '';
+            
+            sections.forEach(sectionId => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        currentSection = sectionId;
+                    }
+                }
+            });
+            
+            // Update active nav link
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const onclick = link.getAttribute('onclick');
+                if (onclick && onclick.includes(currentSection)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Add CSS animation for loading spinner
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .mobile-menu {
+                display: none;
+            }
+            
+            @media (max-width: 768px) {
+                .nav-links {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    flex-direction: column;
+                    padding: 20px;
+                    gap: 10px;
+                }
+                
+                .nav-links.active {
+                    display: flex;
+                }
+                
+                .mobile-menu {
+                    display: block;
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    padding: 8px;
+                }
+                
+                .header-content {
+                    position: relative;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add mobile menu functionality
+        function addMobileMenu() {
+            const headerContent = document.querySelector('.header-content');
+            const navLinks = document.querySelector('.nav-links');
+            
+            // Create mobile menu button
+            const mobileBtn = document.createElement('button');
+            mobileBtn.className = 'mobile-menu';
+            mobileBtn.innerHTML = '☰';
+            mobileBtn.onclick = function() {
+                navLinks.classList.toggle('active');
+                this.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+            };
+            
+            headerContent.appendChild(mobileBtn);
+        }
+
+        // Initialize mobile menu on load
+        document.addEventListener('DOMContentLoaded', function() {
+            addMobileMenu();
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                const navLinks = document.querySelector('.nav-links');
+                const mobileBtn = document.querySelector('.mobile-menu');
+                
+                if (!navLinks.contains(e.target) && !mobileBtn.contains(e.target)) {
+                    navLinks.classList.remove('active');
+                    mobileBtn.innerHTML = '☰';
+                }
+            });
+        });
+
+        // Add easter egg for developer console
+        console.log(`
+        ╔══════════════════════════════════════╗
+        ║           RedactChain v1.0           ║
+        ║     Secure Document Redaction        ║
+        ║        with Blockchain Proof         ║
+        ╚══════════════════════════════════════╝
+        
+        👋 Hello developer! 
+        Thanks for checking out RedactChain.
+        
+        🔒 Security: All processing happens locally
+        ⛓️  Blockchain: Immutable verification hashes
+        🤖 AI-Powered: Enhanced detection with Gemini
+        
+        Questions? Contact us at dev@redactchain.com
+        `);
+    </script>
+ </body>
+</html>

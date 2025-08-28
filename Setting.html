@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - RedactChain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #3a86ff;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3a86ff, #667eea);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: #3a86ff;
+            background: rgba(58, 134, 255, 0.1);
+        }
+
+        .settings-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .settings-header {
+            background: linear-gradient(135deg, #3a86ff, #667eea);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .settings-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .settings-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .settings-content {
+            padding: 40px;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+            color: #3a86ff;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+        .setting-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .setting-info p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3a86ff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3a86ff;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3a86ff, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(58, 134, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #9ca3af);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .api-key-input {
+            position: relative;
+        }
+
+        .api-key-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .notification {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .notification.success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .notification.warning {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .storage-usage {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .usage-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .usage-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3a86ff, #667eea);
+            width: 45%;
+            transition: width 0.3s ease;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .settings-content {
+                padding: 20px;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       <header>
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                RedactChain
+            </div>
+            <div class="profile-menu">
+            <div class="profile-icon">👤</div>
+            <nav>
+              <ul>
+                <li><a href="index.html" >Dashboard</a></li>
+                <li><a href="History.html">History</a></li>
+                <li><a href="Setting.html" class="active">Settings</a></li>
+                <li><a href="Contact.html">Help</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </header>
+
+        <div class="settings-container">
+            <div class="settings-header">
+                <h1>Settings</h1>
+                <p>Customize your RedactChain experience and security preferences</p>
+            </div>
+
+            <div class="settings-content">
+                <!-- AI Configuration Section -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                        AI & Detection Settings
+                    </h2>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>AI-Enhanced Detection</h3>
+                            <p>Use Gemini AI for improved sensitive data detection accuracy</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="aiDetectionToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="geminiKey">Gemini API Key</label>
+                        <div class="api-key-input">
+                            <input type="password" id="geminiKey" placeholder="Enter your Gemini API key">
+                            <button class="api-key-toggle" onclick="toggleApiKeyVisibility()">👁</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Auto-Save API Keys</h3>
+                            <p>Securely store API keys locally for convenience</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoSaveKeys">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Privacy & Security Section -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Privacy & Security
+                    </h2>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Auto-Clear Clipboard</h3>
+                            <p>Automatically clear clipboard after copying redacted content</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoClearClipboard" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Secure Deletion</h3>
+                            <p>Overwrite original data in memory after redaction</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="secureDeletion" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sessionTimeout">Session Timeout (minutes)</label>
+                        <select id="sessionTimeout">
+                            <option value="15">15 minutes</option>
+                            <option value="30" selected>30 minutes</option>
+                            <option value="60">1 hour</option>
+                            <option value="120">2 hours</option>
+                            <option value="0">Never</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Blockchain Settings -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        Blockchain Configuration
+                    </h2>
+
+                    <div class="input-group">
+                        <label for="blockchainNetwork">Blockchain Network</label>
+                        <select id="blockchainNetwork">
+                            <option value="ethereum">Ethereum Mainnet</option>
+                            <option value="polygon" selected>Polygon</option>
+                            <option value="testnet">Ethereum Testnet</option>
+                            <option value="local">Local Development</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Auto-Verify Transactions</h3>
+                            <p>Automatically verify blockchain transactions after storage</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoVerify" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="notification warning">
+                        <strong>Note:</strong> This is a demo version. Blockchain features are simulated for demonstration purposes.
+                    </div>
+                </div>
+
+                <!-- File Processing Settings -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        File Processing
+                    </h2>
+
+                    <div class="input-group">
+                        <label for="maxFileSize">Maximum File Size (MB)</label>
+                        <select id="maxFileSize">
+                            <option value="1">1 MB</option>
+                            <option value="5" selected>5 MB</option>
+                            <option value="10">10 MB</option>
+                            <option value="25">25 MB</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Auto-Download Results</h3>
+                            <p>Automatically download redacted documents after processing</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoDownload">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="outputFormat">Default Output Format</label>
+                        <select id="outputFormat">
+                            <option value="txt" selected>Plain Text (.txt)</option>
+                            <option value="pdf">PDF Document (.pdf)</option>
+                            <option value="docx">Word Document (.docx)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM5 12V7a7 7 0 1114 0v5l2 2v3H3v-3l2-2z" />
+                        </svg>
+                        Notifications
+                    </h2>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Processing Notifications</h3>
+                            <p>Show notifications when document processing completes</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="processingNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Error Notifications</h3>
+                            <p>Show notifications when errors occur during processing</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="errorNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Storage & Data -->
+                <div class="settings-section">
+                    <h2 class="section-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                        </svg>
+                        Storage & Data Management
+                    </h2>
+
+                    <div class="storage-usage">
+                        <h3>Local Storage Usage</h3>
+                        <div class="usage-bar">
+                            <div class="usage-fill"></div>
+                        </div>
+                        <p>4.5 MB of 10 MB used</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="historyRetention">History Retention Period</label>
+                        <select id="historyRetention">
+                            <option value="7">7 days</option>
+                            <option value="30" selected>30 days</option>
+                            <option value="90">90 days</option>
+                            <option value="365">1 year</option>
+                            <option value="0">Forever</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h3>Clear Data on Exit</h3>
+                            <p>Automatically clear all session data when closing the browser</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="clearOnExit">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn" onclick="saveSettings()">Save Settings</button>
+                    <button class="btn btn-secondary" onclick="resetToDefaults()">Reset to Defaults</button>
+                    <button class="btn btn-secondary" onclick="exportSettings()">Export Settings</button>
+                    <button class="btn btn-danger" onclick="clearAllData()">Clear All Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>RedactChain &copy; 2025 | Secure Document Redaction with Blockchain Verification</p>
+    </footer>
+
+    <script>
+        // Settings functionality
+        function toggleApiKeyVisibility() {
+            const input = document.getElementById('geminiKey');
+            const button = event.target;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                button.textContent = '👁';
+            }
+        }
+
+        function saveSettings() {
+            // Collect all settings
+            const settings = {
+                aiDetection: document.getElementById('aiDetectionToggle').checked,
+                geminiKey: document.getElementById('geminiKey').value,
+                autoSaveKeys: document.getElementById('autoSaveKeys').checked,
+                autoClearClipboard: document.getElementById('autoClearClipboard').checked,
+                secureDeletion: document.getElementById('secureDeletion').checked,
+                sessionTimeout: document.getElementById('sessionTimeout').value,
+                blockchainNetwork: document.getElementById('blockchainNetwork').value,
+                autoVerify: document.getElementById('autoVerify').checked,
+                maxFileSize: document.getElementById('maxFileSize').value,
+                autoDownload: document.getElementById('autoDownload').checked,
+                outputFormat: document.getElementById('outputFormat').value,
+                processingNotifications: document.getElementById('processingNotifications').checked,
+                errorNotifications: document.getElementById('errorNotifications').checked,
+                historyRetention: document.getElementById('historyRetention').value,
+                clearOnExit: document.getElementById('clearOnExit').checked
+            };
+
+            // Save to local storage (in a real app, this would be saved securely)
+            try {
+                // Simulate saving settings
+                console.log('Settings saved:', settings);
+                
+                // Show success notification
+                showNotification('Settings saved successfully!', 'success');
+            } catch (error) {
+                showNotification('Error saving settings. Please try again.', 'error');
+            }
+        }
+
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all settings to their default values?')) {
+                // Reset all form elements to default values
+                document.getElementById('aiDetectionToggle').checked = true;
+                document.getElementById('geminiKey').value = '';
+                document.getElementById('autoSaveKeys').checked = false;
+                document.getElementById('autoClearClipboard').checked = true;
+                document.getElementById('secureDeletion').checked = true;
+                document.getElementById('sessionTimeout').value = '30';
+                document.getElementById('blockchainNetwork').value = 'polygon';
+                document.getElementById('autoVerify').checked = true;
+                document.getElementById('maxFileSize').value = '5';
+                document.getElementById('autoDownload').checked = false;
+                document.getElementById('outputFormat').value = 'txt';
+                document.getElementById('processingNotifications').checked = true;
+                document.getElementById('errorNotifications').checked = true;
+                document.getElementById('historyRetention').value = '30';
+                document.getElementById('clearOnExit').checked = false;
+                
+                showNotification('Settings reset to defaults', 'success');
+            }
+        }
+
+        function exportSettings() {
+            const settings = {
+                aiDetection: document.getElementById('aiDetectionToggle').checked,
+                autoSaveKeys: document.getElementById('autoSaveKeys').checked,
+                autoClearClipboard: document.getElementById('autoClearClipboard').checked,
+                secureDeletion: document.getElementById('secureDeletion').checked,
+                sessionTimeout: document.getElementById('sessionTimeout').value,
+                blockchainNetwork: document.getElementById('blockchainNetwork').value,
+                autoVerify: document.getElementById('autoVerify').checked,
+                maxFileSize: document.getElementById('maxFileSize').value,
+                autoDownload: document.getElementById('autoDownload').checked,
+                outputFormat: document.getElementById('outputFormat').value,
+                processingNotifications: document.getElementById('processingNotifications').checked,
+                errorNotifications: document.getElementById('errorNotifications').checked,
+                historyRetention: document.getElementById('historyRetention').value,
+                clearOnExit: document.getElementById('clearOnExit').checked,
+                exportDate: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'redactchain-settings.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Settings exported successfully', 'success');
+        }
+
+        function clearAllData() {
+            if (confirm('This will permanently delete all your data, including settings, history, and cached files. This action cannot be undone. Are you sure?')) {
+                // Clear all data (simulate)
+                console.log('All data cleared');
+                showNotification('All data has been cleared', 'success');
+                
+                // Reset form to defaults
+                resetToDefaults();
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            const settingsContent = document.querySelector('.settings-content');
+            settingsContent.insertBefore(notification, settingsContent.firstChild);
+            
+            // Remove notification after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Load settings on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulate loading saved settings
+            console.log('Loading saved settings...');
+            
+            // Add visual feedback to toggle switches
+            const toggles = document.querySelectorAll('.toggle-switch input');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    // Add some visual feedback or immediate saving logic here
+                    console.log(`Setting ${this.id} changed to:`, this.checked);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
